@@ -5,7 +5,7 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 ## Personal Blog
 
 - [React 全栈笔记](./articles/React全栈笔记.md) [《React 全栈》](https://book.douban.com/subject/26901067/)读书笔记
-- [TypeORM 使用笔记)](./articles/TypeORM使用笔记.md) TypeORM 使用笔记
+- [TypeORM 使用笔记](./articles/TypeORM使用笔记.md) TypeORM 使用笔记
 
 ## Coding Practice
 
