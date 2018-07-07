@@ -8,7 +8,7 @@ TypeORM 实际上是支持自动建表的，定义好 Model 后 TypeORM 实际�
 
 这里我们模拟一个 `用户-订单` 的业务场景。用户 (`user`) 表和订单 (`order`) 表为一对多关系，订单 (`order`) 表和商品 (`good`) 表为多对多的关系，通过中间表 (`good_quant`) 进行关联，同时该中间表也负责记录每笔订单下每件商品购买数量的情况。大致关系如下：
 
-![test_db_eer](./pic/test_db_eer.png)
+![test_db_eer](../assets/test_db_eer.png)
 
 画完关系图，直接导出 SQL 脚本执行即可。
 
