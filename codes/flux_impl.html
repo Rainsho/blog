@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Flux Implementation</title>
+</head>
+
+<body>
+  <h1>An Flux Implementation inspired by
+    <a href="https://github.com/krasimir/react-in-patterns">react-in-patterns</a>
+  </h1>
+  <div id="counter">
+    <span></span>
+    <button>increase</button>
+    <button>decrease</button>
+  </div>
+</body>
+<script>
+  // dispatcher
+  const Dispatcher = () => ({
+    stores: [],
+
+    regeister: function (store) {
+      const subscribes = [];
+      const publish = function () {
+        subscribes.forEach(subscribe => subscribe(store));
+      }
+      const subscribe = function (sub, init) {
+        subscribes.push(sub);
+        init && publish();
+      }
+      this.stores.push({ store, publish });
+      return subscribe;
+    },
+
+    dispatch: function (action) {
+      this.stores.forEach((entry) => {
+        entry.store.update(action, entry.publish);
+      })
+    },
+  });
+
+  // store
+  const counterStore = {
+    data: { value: 1 },
+
+    getValue: function () {
+      return this.data.value;
+    },
+
+    update: function (action, publish) {
+      if (action.type === 'INCRESE') {
+        this.data.value += 1;
+      } else if (action.type === 'DECRESE') {
+        this.data.value -= 1;
+      }
+      publish();
+    },
+  };
+
+  // view
+  const View = function (subscribeCreater, increase, decrease) {
+    let value = null;
+    const [span, increaseBtn, decreaseBtn] = document.getElementById('counter').children;
+
+    const update = (store) => value = store.getValue();
+    const render = () => span.innerHTML = value;
+
+    subscribeCreater(update);
+    subscribeCreater(render);
+
+    increaseBtn.addEventListener('click', increase);
+    decreaseBtn.addEventListener('click', decrease);
+  }
+
+  // connect
+  const dispatcher = Dispatcher();
+  const subscribe = dispatcher.regeister(counterStore);
+  const subscribeCreater = sub => subscribe(sub, true);
+  const increase = () => dispatcher.dispatch({ type: 'INCRESE' });
+  const decrease = () => dispatcher.dispatch({ type: 'DECRESE' });
+
+  View(subscribeCreater, increase, decrease);
+
+</script>
+
+</html>
