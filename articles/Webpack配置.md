@@ -2,8 +2,8 @@
 
 Webpack 的一些常用不常用的配置及插件，参考：
 
-- [webpack-demos](https://github.com/ruanyf/webpack-demos)
-- [dive-into-webpack](https://github.com/gwuhaolin/dive-into-webpack/)
+- [webpack-demos](https://github.com/ruanyf/webpack-demos) 阮一峰 Webpack 案例集合
+- [dive-into-webpack](https://github.com/gwuhaolin/dive-into-webpack/) 吴浩麟 《深入浅出 Webpack》
 
 ## Webpack
 
@@ -403,7 +403,7 @@ Webpack 的一些常用不常用的配置及插件，参考：
 
 - `webpack-parallel-uglify-plugin`
 
-  多线程压缩。
+  多进程压缩。
 
   ```js
   new ParallelUglifyPlugin({
