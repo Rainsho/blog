@@ -218,21 +218,23 @@ Webpack 的一些常用不常用的配置及插件，参考：
 
 ## Loader
 
-- `babel-loader`
-  - `babel-loader?cacheDirectory`
-- `css-loader`
-  - `css-loader?modules` 将非 `:global(.h2)` 的类选择器转化为 hash?
-  - `css-loader?minimize` 压缩 css
-- `awesome-typescript-loader`
-- `ignore-loader`
-- `file-loader`
-- `url-loader`
-  - `limit` -> base64
-  - `fallback` -> `file-loader`
-- `raw-loader` -> svg 文本
-- `svg-inline-loader` svg 压缩
+- 常用 Loader
 
--  编写 Loader
+  - `babel-loader`
+    - `babel-loader?cacheDirectory`
+  - `css-loader`
+    - `css-loader?modules` 将非 `:global(.h2)` 的类选择器转化为 hash?
+    - `css-loader?minimize` 压缩 css
+  - `awesome-typescript-loader`
+  - `ignore-loader`
+  - `file-loader`
+  - `url-loader`
+    - `limit` -> base64
+    - `fallback` -> `file-loader`
+  - `raw-loader` -> svg 文本
+  - `svg-inline-loader` svg 压缩
+
+- 编写 Loader
 
   > 在你开发一个 Loader 时，请保持其职责的单一性，你只需关心输入和输出。
 
@@ -256,7 +258,6 @@ Webpack 的一些常用不常用的配置及插件，参考：
   };
   ```
 
-````
 ## Plugin
 
 - `extract-text-webpack-plugin`
@@ -281,7 +282,7 @@ Webpack 的一些常用不常用的配置及插件，参考：
       }),
     ],
   };
-````
+  ```
 
 - `webpack/lib/optimize/UglifyJsPlugin`
 
@@ -358,7 +359,7 @@ Webpack 的一些常用不常用的配置及插件，参考：
 
 - `webpack/lib/DllPlugin` + `webpack/lib/DllReferencePlugin`
 
-      	动态引用。
+  动态引用。
 
   ```js
   new DllPlugin({
