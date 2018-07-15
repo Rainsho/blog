@@ -245,26 +245,22 @@ Object.defineProperty(obj, prop, descriptor);
 借助 `Object.defineProperty` 的一个伪的双向绑定实现：
 
 ```js
-const inputDOM = document.createElement('input');
-const input = {};
+const model = {};
+const view = document.createElement('input');
 
-Object.defineProperty(inputDOM, '_value', {
+Object.defineProperty(model, 'value', {
+  get: function() {
+    return this._value;
+  },
   set: function(val) {
-    if (this.value !== val) this.value = val;
-    if (input.value !== val) input._value = val;
+    this._value = val;
+    view.value = val;
   },
 });
 
-Object.defineProperty(input, '_value', {
-  set: function(val) {
-    if (this.value !== val) this.value = val;
-    if (inputDOM.value !== val) inputDOM.value = val;
-  },
+view.addEventListener('change', function(e) {
+  model.value = e.target.value;
 });
 
-inputDOM.addEventListener('change', function(e) {
-  inputDOM._value = e.target.value;
-});
-
-document.body.appendChild(inputDOM);
+document.body.appendChild(view);
 ```
