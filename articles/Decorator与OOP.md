@@ -221,3 +221,50 @@ Sub.prototype.constructor = Sub;
 // sub --> Sub.prototype --> Base.prototype --> Object.prototype --> null
 var sub = new Sub({ a: 1, b: 2 });
 ```
+
+## 关于 `Object.defineProperty`
+
+> The `Object.defineProperty()` method defines a new property directly on an object, or modifies an exisiting property on an object, and returns the object.
+
+```js
+Object.defineProperty(obj, prop, descriptor);
+```
+
+- `obj` The object on which to define the property.
+- `prop` The name of the property to be defined or modified.
+- `descriptor` The descriptor for the property being defined or modified.
+  - `configurable` 是否可删除目标属性或修改属性以下特性 (`writable`|`configurable`|`enumerable`)
+  - `enumerable` 是否能在 `for-in` 循环中遍历出来或在 `Object.keys` 中列举出来
+  - `value`
+  - `get`
+  - `set`
+- `return` The object that was passed to the function.
+
+上面不想翻译了，详见 [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) 。
+
+借助 `Object.defineProperty` 的一个伪的双向绑定实现：
+
+```js
+const inputDOM = document.createElement('input');
+const input = {};
+
+Object.defineProperty(inputDOM, '_value', {
+  set: function(val) {
+    if (this.value !== val) this.value = val;
+    if (input.value !== val) input._value = val;
+  },
+});
+
+Object.defineProperty(input, '_value', {
+  set: function(val) {
+    if (this.value !== val) this.value = val;
+    if (inputDOM.value !== val) inputDOM.value = val;
+  },
+});
+
+inputDOM.addEventListener('change', function(e) {
+  inputDOM._value = e.target.value;
+});
+
+document.body.appendChild(inputDOM);
+```
