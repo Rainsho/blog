@@ -6,8 +6,11 @@ ES7 修饰器模式与 JS 面向对象的一些小结，参考：
 - [细说 ES7 JavaScript Decorators](https://www.cnblogs.com/whitewolf/p/details-of-ES7-JavaScript-Decorators.html) 破狼
 - [修饰器](http://es6.ruanyifeng.com/#docs/decorator) 阮一峰 《ECMAScript 6 入门》
 - [面向对象编程](https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000/001434499763408e24c210985d34edcabbca944b4239e20000) 廖雪峰 JavaScript 教程
+- [ES Decorators 简介](http://efe.baidu.com/blog/introduction-to-es-decorator/) 有一个不错的“声明式编程”的示例
 
 ## ES7 修饰器模式
+
+> Decorators make it possible to annotate and modify classes and properties at design time.
 
 通过修饰器在不影响原有接口的功能上扩展新功能，以钢铁侠示例，首选创建 `Man` 类：
 
@@ -81,6 +84,8 @@ descriptor = {
 
 修饰器的本意是要“修饰”类的实例，但此时实例还没生成，所以只能去修饰原型。上面 `decorateArmour` 在定义 `Man` 时即执行，但对 `init` 方法的修饰则在 `init` 调用时生效。上例中，通过 `descriptor.value` 改写原 `init` 方法，使得原方法在调用时 (`method.apply`) 第一入参 `args[0] += moreDef`。
 
+这里有个坑需要注意一下，**由于 `target` 实际上指向原型，所以 `apply` 会使 `init` 内的 `this` 丢失**。如果 `init` 内有使用 `this` 则不能用箭头函数重写 `descriptor.value`。
+
 ### 修饰类
 
 创建 `addFly` 方法，为钢铁侠增加“飞行”能力：
@@ -110,6 +115,21 @@ console.log(`当前状态 ===> ${tony}`);
 作用在方法上的 decorator 接收的第一个参数 `target` 是类的 `prototype`，作用在类上的 decorator 接收到的第一个参数 `target` 是类本身。上例中 `addFly` 实际上是个工厂方法，返回的方法作为 decorator。`target.canFly` 为 `Man` 类添加了 `canFly` 静态属性，`target.prototype.toString` 改写了原型上的 `toStrign` 方法。
 
 > 修饰器对类的行为的改变，是代码编译时发生的，而不是在运行时。这意味着，修饰器能在编译阶段运行代码。
+
+### 修饰属性
+
+修饰属性(`state-0`)与修饰方法类似，不同点在于，`descriptor` 没有 `value`、`get`或 `set`，而是多出一个 `initializer` 属性，在构造函数执行时执行，其返回值作为属性的值。
+
+```js
+function randomize(target, key, descriptor) {
+  let raw = descriptor.initializer;
+  descriptor.initializer = function() {
+    let value = raw.call(this);
+    value += '-' + Math.floor(Math.random() * 1e6);
+    return value;
+  };
+}
+```
 
 ### ES5 实现
 
