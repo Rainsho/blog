@@ -17,3 +17,4 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [race.js](./codes/race.js) `Promise.race` 竞速实例
 - [FluxImpl.html](./codes/FluxImpl.html) 基于原生 JS 的一个简单 Flux 架构实现
 - [co.js](./codes/co.js) tj 大神 co 模块的伪实现
+- [loggerChain.js](./codes/loggerChain.js) 责任链模式的简单实现
