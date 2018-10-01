@@ -11,7 +11,7 @@
 
 还是那个老生常谈的问题：「从输入 URL 到页面加载发生了什么」
 
-![navigation timing](./assets/navigation-timing.png)
+![navigation timing](../assets/navigation-timing.png)
 
 > 览器在得到用户请求之后，经历了下面这些阶段：重定向 → 拉取缓存 → DNS 查询 → 建立 TCP 链接 → 发起请求 → 接收响应 → 处理 HTML 元素 → 元素加载完成
 
