@@ -57,6 +57,25 @@ after XDR:
 
 ![ie9-cros](../assets/ie9-cros.jpg)
 
+伪代码如下：
+
+```js
+window.addEventListener('message', function(e) {
+  console.log(location.host);
+  console.log(e.data);
+});
+
+var iframe = document.createElement('iframe');
+iframe.src = 'http://localhost:9900';
+iframe.style.display = 'none';
+
+var script = document.createElement('script')
+script.innerHTML = "var xhr = new XMLHttpRequest();\nxhr.open('POST', 'http://localhost:9900/api/test');\nxhr.onload = (function (data) {\n  window.parent.postMessage(xhr.responseText, '*');\n});\nxhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\nxhr.send('some data');\n";
+
+iframe.appendChild(script);
+document.body.appendChild(iframe);
+```
+
 ## 参考文档
 
 1. [XDomainRequest – Restrictions, Limitations and Workarounds](https://blogs.msdn.microsoft.com/ieinternals/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds/)
