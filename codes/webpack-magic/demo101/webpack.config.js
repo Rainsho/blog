@@ -8,9 +8,9 @@ module.exports = {
     path: resolve(__dirname, '../dist'),
     filename: '[name].js',
   },
-  devtool: false,
+  devtool: false, // 关闭 source-map 方便阅读构建直出的代码
   optimization: {
-    runtimeChunk: 'single',
+    runtimeChunk: 'single', // 抽离 rumtime 到单独文件
   },
   plugins: [new HtmlWebpackPlugin({ title: 'demo101' })],
 };
