@@ -14,8 +14,8 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 
 ## Coding Practice
 
-- [AsyncChain.js](./codes/AsyncChain.js) 基于 `Promise` 的异步任务链
-- [race.js](./codes/race.js) `Promise.race` 竞速实例
-- [FluxImpl.html](./codes/FluxImpl.html) 基于原生 JS 的一个简单 Flux 架构实现
-- [co.js](./codes/co.js) tj 大神 co 模块的伪实现
-- [loggerChain.js](./codes/loggerChain.js) 责任链模式的简单实现
+- [AsyncChain.js](./codes/solo/AsyncChain.js) 基于 `Promise` 的异步任务链
+- [race.js](./codes/solo/race.js) `Promise.race` 竞速实例
+- [FluxImpl.html](./codes/solo/FluxImpl.html) 基于原生 JS 的一个简单 Flux 架构实现
+- [co.js](./codes/solo/co.js) tj 大神 co 模块的伪实现
+- [loggerChain.js](./codes/solo/loggerChain.js) 责任链模式的简单实现
