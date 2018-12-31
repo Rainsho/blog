@@ -11,7 +11,7 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [Docker 入门 & 实例](./articles/Docker入门与实例.md) Docker 入门 & 实例
 - [前端 101](./articles/FE101.md) 一些前端的零碎知识(不断补充中)
 - [IE9 借助 postMessage 实现跨域请求](./articles/IE9借助postMessage实现跨域请求.md) IE9 跨域遇到的一些问题的总结
-- [详解 webpackBootstrap.md](./articles/详解webpackBootstrap.md) 详解 webpackBootstrap.md
+- [详解 webpackBootstrap](./articles/详解webpackBootstrap.md) 详解 webpackBootstrap.md
 
 ## Coding Practice
 
@@ -20,3 +20,4 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [FluxImpl.html](./codes/solo/FluxImpl.html) 基于原生 JS 的一个简单 Flux 架构实现
 - [co.js](./codes/solo/co.js) tj 大神 co 模块的伪实现
 - [loggerChain.js](./codes/solo/loggerChain.js) 责任链模式的简单实现
+- [happylife.js](./codes/solo/happylife.js) 一个比较综合的 RxJS 入门示例

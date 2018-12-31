@@ -1,14 +1,22 @@
 # 详解 webpackBootstrap
 
-## TL;DR
+## 说明
 
 1. 本文不探讨 webpack 如何配置、如何优化。
 1. 本文侧重 webpack 构建后的代码(模块)如何工作，即 `import` 或 `require` 时到底发生了什么。
 1. 本文主要探究 webpack `rumtime` (即 `webpackBootstrap`) 的完整调用栈。
 
+## TL;DR
+
+1. webpack 将模块封装成函数，以 `{[id]: ƒ}` 形式记录。
+1. `rumtime` 是一个大的自执行函数，入参 `modules` 是一个集合。
+1. 初始化时，通过闭包方法 `webpackJsonpCallback`，将模块 `{[id]: ƒ}` 添加进 `modules`。
+1. `require` 时通过将闭包方法 `__webpack_require__` 作为入参传入模块 `ƒ` 使得模块可以访问到 `rumtime` 闭包作用域下的其他模块。
+1. `__webpack_require__` 将模块 `ƒ` 执行完后 `exports` 的结果放入闭包的 `installedModules` 内，下次 `require` 时直接返回。
+
 ## 简单交代背景
 
-手上的一个项目使用 `DllPlugin` 拆分 `bundles`，每次会单独构建所谓的 DLL。该部分代码主要是一些主流的第三方库诸如 React Redux 等，同时也包含部分自研的工具库。通常都是单独构建后通过 `DllReferencePlugin` 暴露给业务代码引用。DLL 的优势和好处有兴趣的同学可执行参考[官网](https://webpack.js.org/plugins/dll-plugin/)，简单来讲通过这样的构建设计可以大幅度降低构建时间，同时 DLL 文件也可以长时间进行 CDN 缓存。
+手上的一个项目使用 `DllPlugin` 拆分 `bundles`，每次会单独构建所谓的 DLL。该部分代码主要是一些主流的第三方库诸如 React Redux 等，同时也包含部分自研的工具库。通常都是单独构建后通过 `DllReferencePlugin` 暴露给业务代码引用。DLL 的优势和好处有兴趣的同学可自行参考[官网](https://webpack.js.org/plugins/dll-plugin/)，简单来讲通过这样的构建设计可以大幅度降低构建时间，同时 DLL 文件也可以长时间进行 CDN 缓存。
 
 前些日子遇到这样一个优化场景，业务方希望使用 DLL 中的一小部分包(简称 A 包)，开发一个优先加载的模块 P。正常情况下只需要在 P 项目中单独引用 A 包然后正常构建即可。**但是**，不巧的是，该 A 包是进行部分初始化工作的模块，而该优先加载的模块，我们的设计目标是渐进式上线。即在正常情况下 A 包初始化的功能在业务模块内部进行，而在优化场景下需 A 包在该优先加载的(P 项目输出)模块内进行初始化操作。(balabala...，背景越写越长，但不是这次的重点，顺便提一下这个场景的实现方式就是适当的共享不同构建项目的 `rumtime`，至于为什么会可行，了解下 `rumtime` 做了什么就行了)。
 
@@ -100,7 +108,7 @@ var parentJsonpFunction = oldJsonpFunction;
 checkDeferredModules();
 ```
 
-这一段首先检查了 window 下有无之前定义的 `jsonpArray`，若无则定义一个为一个空集合。同时将 `jsonpArray` 的 `push` 方法作为 `oldJsonpFunction` 同时指定其上下文 `this` 为自己。接着使用闭包的 `webpackJsonpCallback` 覆盖其 `push` 方法。
+这一段首先检查了 window 下有无之前定义的 `jsonpArray`，若无则定义为一个空集合。同时将 `jsonpArray` 的 `push` 方法作为 `oldJsonpFunction` 同时指定其上下文 `this::window["webpackJsonp"]` 为自己。接着使用闭包的 `webpackJsonpCallback` 覆盖其 `push` 方法(此时同时覆盖了 `window["webpackJsonp"]` 的 `push` 方法，但 `oldJsonpFunction` 指向原生的 `push` 方法)。
 
 接下来 `jsonpArray = jsonpArray.slice();` 这一行比较重要！调用了原生的 `slice` 方法，使得 `jsonpArray` 变成一个普通的 Array。此时 `jsonpArray.push === Array.prototype.push` 而之前暴露在 window 下的 `window["webpackJsonp"] === webpackJsonpCallback`。
 
@@ -130,7 +138,7 @@ function checkDeferredModules() {
 }
 ```
 
-`checkDeferredModules` 并没有入参，因此它能取到的值都是当前 `runtime` 内闭包的变量。它做的事情也很简单，即对闭包集合 `deferredModules` 内的所有 modules 进行遍历，如果其满足 `fulfilled` 条件(即任意 module 依赖的所有 chunks 都已经在 `installedChunks` 内)，则将其从 `deferredModules` 删除，使用 `__webpack_require__` 调用该 module 内的 `[0]` 模块(注意一定是 `[0]` 模块)。
+`checkDeferredModules` 并没有入参，因此它能取到的值都是当前 `runtime` 内闭包的变量。它做的事情也很简单，即对闭包集合 `deferredModules` 内的所有 modules 进行遍历，如果其满足 `fulfilled` 条件(即任意 module 依赖的所有 chunks 都已经在 `installedChunks` 内，注意检查是从 `j = 1` 开始的)，则将其从 `deferredModules` 删除，使用 `__webpack_require__` 调用该 module 内的 `j = 0` 对应的模块(即入口模块)。
 
 ### 闭包函数 `webpackJsonpCallback`
 
@@ -171,6 +179,8 @@ function webpackJsonpCallback(data) {
 ```
 
 回头再看 `webpackJsonpCallback`，它的入参是一个有 3 个对象的集合。第一个是当前 chunk 的 IDs (通常为单个)，类型为 `Array<string>`；第二个是当前 chunk 包含的模块，类型为 `{[string]: function}`；第三个则是该 chunk 的执行依赖 chunks，类型为 `Array<Array<string>>`。前两个参数无需多说，第三个参数是 webpack 4 新引入的，其作用就是交给前面提到的 `checkDeferredModules` 去检查 module 是否具备执行条件 `fulfilled`。
+
+> Tips: 这里的第一和第三入参之所以是 `Array` 实际上对应的是多入口的情况 `chunkIds: Array<string>(n)` 和 `executeModules： Array<Array<string>>(n)`，原则上讲两个 n 应该是相等的。还有一点就是 `executeModules` 的准确类型应该是 `[[moduleId, ...chunkIds]]`，`moduleId` 是该模块的入坑，对应上方 `j = 0` 的情况，而 `chunkIds` 才是该模块能够执行的条件。
 
 `webpackJsonpCallback` 的内部，首先遍历当前 chunk 的 `chunkIds`，将其在 `installedChunks` 内的状态标识为 0；如果标识之前其已经在 `installedChunks` 内，则将其放入 `resolves` 集合内。接下来遍历该 chunk 所包含的所有模块，将其放在 `modules` 内对应的位置上。**注意**，这里的 `modules` 是 `runtime` 自执行函数的入参，即那个空集合。接着用入参，调用当前 `runtime` 的 `parentJsonpFunction` 方法；然后遍历 `resolves` 集合让其自执行(这两部分主要是有多个 `runtime` 时才会有影响，主要还是为了让之前的模块有机会拿到依赖的 chunks 从而触发执行，后面再详细分析)。最后，当前 chunk 安装完毕，将当前 chunk 依赖的 chunks 放入 `deferredModules`，检查是否具备执行条件 `checkDeferredModules()`。
 
@@ -356,15 +366,15 @@ demo101 的源码已经在前面 [准备环境](#准备环境) 做了介绍。�
 
   到此 `./demo101/bar.js` 内部代码执行完毕，调用栈开始弹出：
 
-|              Call Stack              |                              Continue                              |
-| :----------------------------------: | :----------------------------------------------------------------: |
-|   ./demo101/bar.js (demo101.js:11)   |                                 -                                  |
-| **webpack_require** (runtime.js:80)  |        标记 `module` + 返回 `./demo101/bar.js` 模块输出(42)        |
-|   ./demo101/foo.js (demo101.js:21)   |          拿到 `./demo101/bar.js` 模块输出后执行完剩余代码          |
-| **webpack_require** (runtime.js:80)  |          标记 `module` + 返回 `./demo101/foo.js` 模块输出          |
-| checkDeferredModules (runtime.js:47) | 跳出循环，返回 `deferredModule[0]` 即 `./demo101/foo.js` 模块输出  |
-| webpackJsonpCallback (runtime.js:34) | 返回 `checkDeferredModules()` 输出，即 `./demo101/foo.js` 模块输出 |
-|      (anonymous) (demo101.js:1)      |                                END                                 |
+|               Call Stack                |                              Continue                              |
+| :-------------------------------------: | :----------------------------------------------------------------: |
+|    ./demo101/bar.js (demo101.js:11)     |                                 -                                  |
+| \_\_webpack_require\_\_ (runtime.js:80) |        标记 `module` + 返回 `./demo101/bar.js` 模块输出(42)        |
+|    ./demo101/foo.js (demo101.js:21)     |          拿到 `./demo101/bar.js` 模块输出后执行完剩余代码          |
+| \_\_webpack_require\_\_ (runtime.js:80) |          标记 `module` + 返回 `./demo101/foo.js` 模块输出          |
+|  checkDeferredModules (runtime.js:47)   | 跳出循环，返回 `deferredModule[0]` 即 `./demo101/foo.js` 模块输出  |
+|  webpackJsonpCallback (runtime.js:34)   | 返回 `checkDeferredModules()` 输出，即 `./demo101/foo.js` 模块输出 |
+|       (anonymous) (demo101.js:1)        |                                END                                 |
 
 ## what's next
 
