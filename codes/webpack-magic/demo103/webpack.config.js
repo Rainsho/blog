@@ -1,9 +1,10 @@
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const AutoCDNPlugin = require('./plugins/AutoCDNPlugin');
 
 module.exports = {
   mode: 'development',
-  entry: { demo101: resolve(__dirname, 'foo.js') },
+  entry: { demo103: resolve(__dirname, 'src/index.js') },
   output: {
     path: resolve(__dirname, '../dist'),
     filename: '[name].js',
@@ -12,5 +13,10 @@ module.exports = {
   optimization: {
     runtimeChunk: 'single', // 抽离 rumtime 到单独文件
   },
-  plugins: [new HtmlWebpackPlugin({ title: 'webpack demo' })],
+  plugins: [
+    new HtmlWebpackPlugin({ title: 'webpack demo' }),
+    // new AutoCDNPlugin({
+    //   lodash: { var: '_', url: 'https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js' },
+    // }),
+  ],
 };

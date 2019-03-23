@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: { demo101: resolve(__dirname, 'foo.js') },
+  entry: { demo104: resolve(__dirname, 'src/index.js') },
   output: {
     path: resolve(__dirname, '../dist'),
     filename: '[name].js',

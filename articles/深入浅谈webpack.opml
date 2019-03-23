@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+<head>
+<title>outline</title>
+</head>
+<body>
+<outline text="课程流程"><outline text="概述"><outline text="课程定位"><outline text="工程化内容"></outline>
+<outline text="webpackBootstrap"><outline text="当 require 时发生了什么"></outline>
+</outline>
+<outline text="主站优化策略"><outline text="定义自己的 loader plugin"></outline>
+<outline text="dll"></outline>
+<outline text="动态加载、common"></outline>
+</outline>
+</outline>
+<outline text="解决问题"><outline text="田园时代"></outline>
+<outline text="提高效率"></outline>
+<outline text="规范、lint、test"></outline>
+</outline>
+<outline text="包含内容"><outline text="终极目标"><outline text="浏览器环境执行"></outline>
+</outline>
+<outline text="自动化"><outline text="自动发布"></outline>
+<outline text="资源优化"></outline>
+</outline>
+</outline>
+<outline text="工作流"><outline text="质量、构建、分析"></outline>
+</outline>
+</outline>
+<outline text="webpack"><outline text="本质"><outline text="复读机、打包工具"></outline>
+</outline>
+<outline text="举个例子"><outline text="规范的好处？"><outline text="约定优于配置、零配置"></outline>
+</outline>
+<outline text="终极问题"></outline>
+<outline text="发生了什么？"><outline text="2 files -&gt; 1 file"></outline>
+</outline>
+</outline>
+<outline text="执行流程"><outline text="概念"></outline>
+<outline text="对照示例"><outline text="入口 src/index.js"></outline>
+<outline text="解析"><outline text="ok, js 都认识"><outline text="acorn"></outline>
+</outline>
+<outline text="不认识怎么办"><outline text="loader"></outline>
+</outline>
+<outline text="不执行"></outline>
+</outline>
+<outline text="import"><outline text="./answer"></outline>
+<outline text="resolve"></outline>
+<outline text="解析"></outline>
+</outline>
+<outline text="依赖图"><outline text="与此同时"></outline>
+</outline>
+<outline text="输出"><outline text="作用域"></outline>
+<outline text="require"></outline>
+</outline>
+</outline>
+<outline text="扩展问题"><outline text="依赖图"><outline text="lite + header + room"></outline>
+</outline>
+<outline text="循环依赖"></outline>
+<outline text="常见错误"><outline text="配置类型 --entry"></outline>
+<outline text="parse"><outline text="babel vs polyfill"></outline>
+</outline>
+<outline text="resolve"><outline text="first or both?"></outline>
+</outline>
+</outline>
+</outline>
+</outline>
+<outline text="核心概念"><outline text="entry"></outline>
+<outline text="output"></outline>
+<outline text="loader"><outline text="解析模块"></outline>
+<outline text="翻译翻译"><outline text="webpack 之前"></outline>
+</outline>
+<outline text="有效模块"><outline text="magic"></outline>
+<outline text="特定解析器解析"><outline text="postcss"></outline>
+</outline>
+<outline text="解析地址"><outline text="file"></outline>
+</outline>
+</outline>
+<outline text="示例 PNG"><outline text="直接"><outline text="TypedArray"><outline text="对照规范"></outline>
+</outline>
+<outline text="乱码文本"><outline text="can&apos;t parse"></outline>
+</outline>
+</outline>
+<outline text="返回文本"><outline text="模块思维"></outline>
+<outline text="指明位置"></outline>
+</outline>
+</outline>
+</outline>
+<outline text="plugin"><outline text="流程管控"><outline text="对比 loader"></outline>
+</outline>
+<outline text="tapable"><outline text="类似 EventEmitter"></outline>
+<outline text="Pub/Sub"></outline>
+</outline>
+</outline>
+</outline>
+</outline>
+<outline text="webpackBootstrap"><outline text="准备代码"><outline text="bar -&gt; foo"></outline>
+<outline text="webpack.config.js"></outline>
+</outline>
+<outline text="run 整体 "><outline text="runtime"><outline text="IIFE"></outline>
+</outline>
+<outline text="demo101"><outline text="webpackJsonp.push"></outline>
+<outline text="[[], {}, [[]]]"></outline>
+</outline>
+</outline>
+<outline text="先看结论"><outline text="{[id]: ƒ}"></outline>
+<outline text="modules"></outline>
+<outline text="{[id]: ƒ} -&gt; modules"></outline>
+<outline text="__webpack_require__"></outline>
+<outline text="exports -&gt; installedModules"></outline>
+</outline>
+<outline text="关键代码"><outline text="runtime"><outline text="L3 L141 L143"><outline text="webpackJsonpCallback"></outline>
+</outline>
+<outline text="L18"><outline text="-&gt; modules"></outline>
+</outline>
+<outline text="L33"></outline>
+<outline text="L40 j=1; L46 j=0"></outline>
+</outline>
+<outline text="demo101"><outline text="demo101"></outline>
+<outline text="{[id]: ƒ}"></outline>
+<outline text="[foo, ...dep]"></outline>
+</outline>
+<outline text="debug"><outline text="L53"><outline text="installedModules + installedChunks"></outline>
+</outline>
+<outline text="L143"><outline text="webpackJsonp === jsonpArray"></outline>
+</outline>
+<outline text="L144"><outline text="jsonpArray.push === Array.prototype.push"></outline>
+</outline>
+<outline text="L150"><outline text="Scope"></outline>
+</outline>
+<outline text="L18"><outline text="{[id]: ƒ} -&gt; modules"></outline>
+</outline>
+<outline text="L40"><outline text="[foo, ...dep]"></outline>
+</outline>
+<outline text="L68"><outline text="installedModules[moduleId].exports"></outline>
+</outline>
+<outline text="L72"><outline text="未完成的拷贝"></outline>
+</outline>
+<outline text="L79"><outline text="modules[moduleId].call"></outline>
+</outline>
+</outline>
+</outline>
+</outline>
+<outline text="webpack 高级用法"><outline text="loader"><outline text="return &apos;&apos;"><outline text="真实存在"></outline>
+<outline text="意义？"><outline text="test/ssr"></outline>
+</outline>
+</outline>
+<outline text="工具"><outline text="runner"><outline text="简单配置"><outline text="option.module.rules"></outline>
+<outline text="rules 规则"></outline>
+<outline text="loader 嵌套"></outline>
+</outline>
+</outline>
+<outline text="utils"><outline text="getOptions"></outline>
+<outline text="interpolateName"><outline text="篡改 [inˈtərpəˌlāt]"></outline>
+<outline text="生成特定名称"></outline>
+<outline text="output.filename"></outline>
+</outline>
+</outline>
+<outline text="示例"><outline text="ignore-loader.js"></outline>
+<outline text="run-loader.js"><outline text="options + cb"></outline>
+<outline text="resource"></outline>
+<outline text="loaders"></outline>
+</outline>
+<outline text="query-string"></outline>
+<outline text="Buffer -&gt; comments"></outline>
+<outline text="Q/A"></outline>
+</outline>
+</outline>
+<outline text="实战"><outline text="goose.jpg -&gt; index.js"><outline text="呆头鹅"></outline>
+</outline>
+<outline text="通常用法"><outline text=".src = xxx"></outline>
+</outline>
+<outline text="构建"><outline text="未输出图片"></outline>
+<outline text="图片被视为模块打包进 JS"></outline>
+</outline>
+<outline text="效果"><outline text="图片 -&gt; 有效模块"></outline>
+</outline>
+<outline text="实现"><outline text="index.js [src]"><outline text="合法 URL + 可访问"></outline>
+</outline>
+<outline text="Data URLs"></outline>
+<outline text="默认输出"></outline>
+<outline text="引入"></outline>
+</outline>
+</outline>
+</outline>
+<outline text="plugin"><outline text="概念"><outline text="compiler + compilation"><outline text="webpack | 编译 实例"></outline>
+<outline text="官方秉承"><outline text="RTFSC"><outline text="Linus"></outline>
+</outline>
+</outline>
+<outline text="debugger"><outline text="options loaders plugins"></outline>
+<outline text="modules chunks assets"></outline>
+</outline>
+</outline>
+<outline text="tapable"><outline text="webpack 工作流"></outline>
+<outline text="类似 EventEmitter"><outline text="监听、触发"></outline>
+</outline>
+<outline text="提供 hooks"></outline>
+<outline text="伪代码"><outline text="tap 注册"></outline>
+<outline text="call 触发"></outline>
+</outline>
+</outline>
+<outline text="示例"><outline text="apply 方法"><outline text="must"></outline>
+<outline text="compiler 初始化时"></outline>
+<outline text="apply(compiler)"></outline>
+</outline>
+<outline text="constructor"><outline text="user options"></outline>
+</outline>
+<outline text="compiler.hooks"></outline>
+<outline text="done.tap [dən]"><outline text="第一个参数是名称"></outline>
+</outline>
+<outline text="compiler.hooks.done.call"></outline>
+</outline>
+</outline>
+<outline text="hooks"><outline text="v3 - v4"><outline text="hooks.log"></outline>
+</outline>
+<outline text="compiler"><outline text="thisCompilation"><outline text="compiler -&gt; compilation"></outline>
+</outline>
+<outline text="make"><outline text="compilation.hooks"></outline>
+</outline>
+<outline text="emit"></outline>
+<outline text="done"></outline>
+</outline>
+<outline text="compilation"><outline text="buildModule | succeedModule"><outline text="多次构建"></outline>
+</outline>
+<outline text="finishModules"><outline text="结束构建"></outline>
+</outline>
+<outline text="seal"></outline>
+<outline text="additionalAssets"><outline text="添加附加资源"></outline>
+</outline>
+<outline text="optimizeChunkAssets"><outline text="chunk.files"></outline>
+<outline text="compilation.assets"></outline>
+<outline text="compilation.additionalChunkAssets"></outline>
+<outline text="添加 banner"></outline>
+</outline>
+</outline>
+</outline>
+<outline text="实战"><outline text="外部扩展"><outline text="不打包"></outline>
+<outline text="先决条件"><outline text="连接方式，命名空间"></outline>
+<outline text="合适的位置，CDN"></outline>
+</outline>
+</outline>
+<outline text="效果"><outline text="index.js"></outline>
+<outline text="对比 demo103.js"></outline>
+</outline>
+<outline text="实现思路"><outline text="把大象装进冰箱"></outline>
+<outline text="AutoCDNPlugin.js"></outline>
+<outline text="通过 compiler 修改配置"></outline>
+<outline text="通过 compilation.assets 修改模版"></outline>
+</outline>
+<outline text="原理"><outline text="对比 window._"></outline>
+</outline>
+</outline>
+</outline>
+<outline text="常用优化"><outline text="DLL"><outline text="概念"><outline text="类比上方 externals"><outline text="lodash -&gt; 外部依赖"></outline>
+</outline>
+<outline text="更多模块"></outline>
+</outline>
+<outline text="效果"><outline text="index.js"></outline>
+<outline text="单独构建与两步构建"><outline text="当 src 需要改变"></outline>
+<outline text="长期 CDN"></outline>
+</outline>
+</outline>
+<outline text="原理"><outline text="vendor_2d4c95b"><outline text="暴露方法"></outline>
+</outline>
+<outline text="manifest.json"><outline text="关联构建"></outline>
+</outline>
+<outline text="demo104.dll.js"><outline text="两步 require"></outline>
+</outline>
+<outline text="证明一下"></outline>
+</outline>
+</outline>
+<outline text="按需加载"><outline text="效果"><outline text="demo101"><outline text="bar.js"></outline>
+<outline text="foo.js"></outline>
+</outline>
+<outline text="network"></outline>
+<outline text="click x2"><outline text="Q/A"></outline>
+</outline>
+</outline>
+<outline text="magic"><outline text="__webpack_require__ -&gt; .e"></outline>
+<outline text=".then(__webpack_require__)"></outline>
+</outline>
+<outline text="__webpack_require__.e"><outline text="L110"><outline text="提前 installedChunks"></outline>
+<outline text="[res, rej]"></outline>
+</outline>
+<outline text="L13"><outline text="resolves"></outline>
+</outline>
+<outline text="L18"><outline text="-&gt; modules"></outline>
+</outline>
+<outline text="L25"><outline text="resolves.shift()()"></outline>
+</outline>
+</outline>
+</outline>
+<outline text="提取公共代码"><outline text="效果"></outline>
+<outline text="magic"><outline text="多 chunk"></outline>
+<outline text="common.js"><outline text="args[2] === undefined"></outline>
+<outline text="-&gt; modules"></outline>
+<outline text="checkDeferredModules()"></outline>
+</outline>
+</outline>
+</outline>
+<outline text="输出分析"><outline text="too large?"></outline>
+<outline text="import twice?"></outline>
+</outline>
+<outline text="缓存与并发"><outline text="引子"></outline>
+</outline>
+<outline text="实际案例"><outline text="30+ chunks"><outline text="split common"></outline>
+<outline text="merge css"></outline>
+</outline>
+</outline>
+</outline>
+</outline>
+</outline>
+</body>
+</opml>

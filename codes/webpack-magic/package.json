@@ -4,12 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "wb101": "webpack --config demo101/webpack.config.js"
+    "demo101": "webpack --config demo101/webpack.config.js",
+    "demo102": "webpack --config demo102/webpack.config.js",
+    "demo103": "webpack --config demo103/webpack.config.js",
+    "demo104": "webpack --config demo104/webpack.config.js",
+    "demo104:dll": "webpack --config demo104/webpack.dll.js",
+    "demo104:src": "webpack --config demo104/webpack.src.js",
+    "demo106": "webpack --config demo106/webpack.config.js",
+    "demo107": "webpack --config demo107/webpack.config.js",
+    "debug": "node --inspect-brk debug.js"
   },
   "author": "Rainsho rainsho@126.com",
   "license": "ISC",
   "dependencies": {
     "html-webpack-plugin": "^3.2.0",
+    "loader-runner": "^3.0.0",
+    "loader-utils": "^1.2.3",
+    "lodash": "^4.17.11",
+    "mime": "^2.4.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2"
   }
