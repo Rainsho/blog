@@ -237,7 +237,7 @@ module.exports = function(content) {
 > data:[<mediatype>][;base64],<data>
 > ```
 
-核心代码 [img-loader.js](../codes/webpack-magic/demo102/loaders/img-loader.js)：
+示例参考 [demo102](../codes/webpack-magic/demo102)，核心代码 [img-loader.js](../codes/webpack-magic/demo102/loaders/img-loader.js)：
 
 ```js
 module.exports = function(content) {
@@ -343,7 +343,7 @@ compiler.hooks.someHook.tap(/* ... */);
 
 要实现这一功能，需要两步。首选，在 webpack 开始处理 entry 之前，**修改配置**对需要应用外部扩展的库添加 `externals` 配置；其次，在编译完成后在模版文件内部加入外部扩展库的 CDN 引用。
 
-核心代码 [AutoCDNPlugin.js](../codes/webpack-magic/demo103/plugins/AutoCDNPlugin.js)：
+示例参考 [demo103](../codes/webpack-magic/demo103)，核心代码 [AutoCDNPlugin.js](../codes/webpack-magic/demo103/plugins/AutoCDNPlugin.js)：
 
 ```js
 compiler.hooks.done.tap('AutoCDNPlugin', stats => {
@@ -590,7 +590,7 @@ compiler.hooks.emit.tap('CombineCssPlugin', compilation => {
 
 # 小结
 
-通过此次课程希望各位对 webpack 的构建流程以及构建代码的执行流程能有一个初步的了解。此次课程更多是把 webpack 的各个点拆开了给大家介绍，如果各位能从一到两个点上获得启发，那我认为就是物有所值的。webpack 的终极威力是要把这些零碎的点组织成一个完整的配置，这样才能体现它的效率。这方面的介绍，还请大家持续关注后续课程(never exists)。
+通过此次课程希望各位对 webpack 的构建流程以及构建代码的执行流程能有一个初步的了解。此次课程更多是把 webpack 的各个点拆开了给大家介绍，如果各位能从一到两个点上获得启发，那我认为就是物有所值的。webpack 的终极威力是要把这些零碎的点组织成一个完整的配置，这样才能体现它的效率。这方面的介绍，~~还请大家持续关注后续课程~~(可能太无聊了，我并不会写)。
 
 # 扩展阅读
 
