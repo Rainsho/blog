@@ -13,6 +13,7 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [IE9 借助 postMessage 实现跨域请求](./articles/IE9借助postMessage实现跨域请求.md) IE9 跨域遇到的一些问题的总结
 - [详解 webpackBootstrap](./articles/详解webpackBootstrap.md) 详解 webpackBootstrap
 - [幸会那条大鱼](./articles/幸会那条大鱼.md) 2018 年工作总结
+- [深入浅谈 webpack](./articles/深入浅谈webpack.md) 培训材料，可以看做上方《详解 webpackBootstrap》的扩展阅读
 
 ## Coding Practice
 
