@@ -23,4 +23,5 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [co.js](./codes/solo/co.js) tj 大神 co 模块的伪实现
 - [loggerChain.js](./codes/solo/loggerChain.js) 责任链模式的简单实现
 - [happylife.js](./codes/solo/happylife.js) 一个比较综合的 RxJS 入门示例
-- [LRU.js](./codes/algorithm/LRU.js) LRU (Least Recently Used) 最近最少使用策略实现
+- [LRU.js](./codes/algorithm/LRU.js) LRU (Least Recently Used) 最近最少使用算法实现
+- [CircularQueue.js](./codes/algorithm/CircularQueue.js) 循环队列 Circular Queue 数据结构实现
