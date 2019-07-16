@@ -1,6 +1,7 @@
 /**
  * LRU (Least Recently Used) 最近最少使用策略
  * 使用 散列表 + 双向链表 O(1) 复杂度实现
+ * 暂不实现扩容功能，当 HashTable 容量达到 capacity 上限时，丢弃链表尾部元素
  */
 
 class Node {
@@ -12,7 +13,7 @@ class Node {
   }
 }
 
-class HashTable {
+class Table {
   constructor(capacity = 10) {
     this.capacity = capacity;
     this.table = {};
@@ -36,7 +37,7 @@ class HashTable {
 
     if (!this.table[hash]) {
       this.table[hash] = node;
-      return val;
+      return node;
     }
 
     let last = this.table[hash];
@@ -45,7 +46,7 @@ class HashTable {
 
     last.hnext = node;
 
-    return val;
+    return node;
   }
 
   remove(val) {
@@ -72,17 +73,17 @@ class HashTable {
     return false;
   }
 
-  has(val) {
+  get(val) {
     const hash = this.hashed(val);
 
     if (!this.table[hash]) return false;
 
     let current = this.table[hash];
 
-    if (current.val === val) return true;
+    if (current.val === val) return current;
 
     while (current.val !== val && current.hnext) {
-      if (current.hnext.val === val) return true;
+      if (current.hnext.val === val) return current.hnext;
 
       current = current.hnext;
     }
@@ -101,7 +102,7 @@ class HashTable {
           current = current.hnext;
         }
 
-        return `${key}: ${values.join(' -> ')}`;
+        return `  ${key}: ${values.join(' -> ')}`;
       })
       .join('\n');
   }
@@ -109,3 +110,67 @@ class HashTable {
 
 // prettier-ignore
 const genStr = () => Math.random().toString(36).substr(2, 8);
+
+const THRESHOLD = 5;
+const HEAD = new Node('$$$');
+const fragments = new Array(THRESHOLD * 2).fill(1).map(genStr);
+const t = new Table(THRESHOLD);
+
+function LRU(val) {
+  let node = t.get(val);
+
+  if (node) {
+    node.prev.next = node.next;
+    node.prev = HEAD;
+    node.next = HEAD.next;
+    if (HEAD.next) HEAD.next.prev = node;
+    HEAD.next = node;
+    return;
+  }
+
+  node = t.add(val);
+  node.prev = HEAD;
+  node.next = HEAD.next;
+  if (HEAD.next) HEAD.next.prev = node;
+  HEAD.next = node;
+
+  let current = HEAD.next;
+
+  for (let i = 1; i <= THRESHOLD; i++) {
+    if (i === THRESHOLD && current.next) {
+      t.remove(current.next.val);
+      current.next = null;
+      return;
+    }
+
+    if (!current.next) break;
+
+    current = current.next;
+  }
+}
+
+function formatList() {
+  const values = [];
+  let current = HEAD;
+
+  values.push(current.val);
+
+  while (current.next) {
+    values.push(current.next.val);
+    current = current.next;
+  }
+
+  return '  ' + values.join(' -> ');
+}
+
+// start visting
+new Array(THRESHOLD * 3).fill(1).forEach(() => {
+  const i = ~~(Math.random() * fragments.length);
+  const val = fragments[i];
+
+  LRU(val);
+  console.log('LRU visiting:', val);
+  console.log('Table:\n' + t);
+  console.log('List:\n' + formatList());
+  console.log();
+});
