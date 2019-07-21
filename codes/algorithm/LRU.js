@@ -15,8 +15,9 @@ class Node {
 
 class Table {
   constructor(capacity = 10) {
-    this.capacity = capacity;
+    this.size = 0;
     this.table = {};
+    this.capacity = capacity;
   }
 
   // range(0, 5)
@@ -32,6 +33,7 @@ class Table {
   }
 
   add(val) {
+    this.size++;
     const node = new Node(val);
     const hash = this.hashed(node.val);
 
@@ -57,12 +59,14 @@ class Table {
     let current = this.table[hash];
 
     if (current.val === val) {
+      this.size--;
       this.table[hash] = current.hnext;
       return true;
     }
 
     while (current.val !== val && current.hnext) {
       if (current.hnext.val === val) {
+        this.size--;
         current.hnext = current.hnext.hnext;
         return true;
       }
@@ -113,6 +117,7 @@ const genStr = () => Math.random().toString(36).substr(2, 8);
 
 const THRESHOLD = 5;
 const HEAD = new Node('$$$');
+const TAIL = new Node('$$$');
 const fragments = new Array(THRESHOLD * 2).fill(1).map(genStr);
 const t = new Table(THRESHOLD);
 
@@ -120,12 +125,19 @@ function LRU(val) {
   let node = t.get(val);
 
   if (node) {
+    if (HEAD.next === node) return node;
+    if (TAIL.prev === node) TAIL.prev = node.prev;
+
     node.prev.next = node.next;
+    if (node.next) node.next.prev = node.prev;
+
     node.prev = HEAD;
     node.next = HEAD.next;
+
     if (HEAD.next) HEAD.next.prev = node;
     HEAD.next = node;
-    return;
+
+    return node;
   }
 
   node = t.add(val);
@@ -134,19 +146,15 @@ function LRU(val) {
   if (HEAD.next) HEAD.next.prev = node;
   HEAD.next = node;
 
-  let current = HEAD.next;
+  if (!TAIL.prev) TAIL.prev = node;
 
-  for (let i = 1; i <= THRESHOLD; i++) {
-    if (i === THRESHOLD && current.next) {
-      t.remove(current.next.val);
-      current.next = null;
-      return;
-    }
-
-    if (!current.next) break;
-
-    current = current.next;
+  if (t.size > THRESHOLD) {
+    t.remove(TAIL.prev.val);
+    TAIL.prev = TAIL.prev.prev;
+    TAIL.prev.next = null;
   }
+
+  return node;
 }
 
 function formatList() {
@@ -170,7 +178,7 @@ new Array(THRESHOLD * 3).fill(1).forEach(() => {
 
   LRU(val);
   console.log('LRU visiting:', val);
-  console.log('Table:\n' + t);
+  console.log(`Table(size = ${t.size}):\n` + t);
   console.log('List:\n' + formatList());
   console.log();
 });
