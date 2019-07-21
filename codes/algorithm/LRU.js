@@ -1,9 +1,17 @@
 /**
  * LRU (Least Recently Used) 最近最少使用策略
  * 使用 散列表 + 双向链表 O(1) 复杂度实现
- * 暂不实现扩容功能，当 HashTable 容量达到 capacity 上限时，丢弃链表尾部元素
+ * 暂不实现扩容功能，当 Table 容量达到 LRU 预设上限时，丢弃链表尾部元素
  */
 
+/**
+ * 双向链表节点
+ *
+ * @property {string} val   节点值
+ * @property {Node}   prev  前驱指针
+ * @property {Node}   next  后驱指针
+ * @property {Node}   hnext 链表中的后驱指针
+ */
 class Node {
   constructor(val) {
     this.val = val;
@@ -13,6 +21,15 @@ class Node {
   }
 }
 
+/**
+ * 散列表 使用链表法处理访问冲突
+ *
+ * @function hashed
+ * @function add
+ * @function remove
+ * @function get
+ * @function toString
+ */
 class Table {
   constructor(capacity = 10) {
     this.size = 0;
@@ -37,11 +54,13 @@ class Table {
     const node = new Node(val);
     const hash = this.hashed(node.val);
 
+    // 当前地址为空直接插入
     if (!this.table[hash]) {
       this.table[hash] = node;
       return node;
     }
 
+    // 非空插入链表尾端
     let last = this.table[hash];
 
     while (last.hnext) last = last.hnext;
@@ -116,8 +135,10 @@ class Table {
 const genStr = () => Math.random().toString(36).substr(2, 8);
 
 const THRESHOLD = 5;
-const HEAD = new Node('$$$');
-const TAIL = new Node('$$$');
+const HEAD = new Node('$$$'); // 不存入 Table 的虚拟头 简化操作
+const TAIL = new Node('$$$'); // 不存入 Table 的虚拟尾 简化操作
+
+// 用于随机访问的片段 增加重复访问概念
 const fragments = new Array(THRESHOLD * 2).fill(1).map(genStr);
 const t = new Table(THRESHOLD);
 
@@ -125,15 +146,21 @@ function LRU(val) {
   let node = t.get(val);
 
   if (node) {
+    // 在头部不用处理
     if (HEAD.next === node) return node;
+
+    // 在尾部更新尾部指针
     if (TAIL.prev === node) TAIL.prev = node.prev;
 
+    // 关联前后节点
     node.prev.next = node.next;
     if (node.next) node.next.prev = node.prev;
 
+    // 更新自身指针
     node.prev = HEAD;
     node.next = HEAD.next;
 
+    // 更新头部指针
     if (HEAD.next) HEAD.next.prev = node;
     HEAD.next = node;
 
@@ -141,13 +168,18 @@ function LRU(val) {
   }
 
   node = t.add(val);
+
+  // 更新自身指针
   node.prev = HEAD;
   node.next = HEAD.next;
+
+  // 更新头部指针
   if (HEAD.next) HEAD.next.prev = node;
   HEAD.next = node;
 
   if (!TAIL.prev) TAIL.prev = node;
 
+  // 清理过时数据
   if (t.size > THRESHOLD) {
     t.remove(TAIL.prev.val);
     TAIL.prev = TAIL.prev.prev;
