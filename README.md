@@ -14,6 +14,7 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [详解 webpackBootstrap](./articles/详解webpackBootstrap.md) 详解 webpackBootstrap
 - [幸会那条大鱼](./articles/幸会那条大鱼.md) 2018 年工作总结
 - [深入浅谈 webpack](./articles/深入浅谈webpack.md) 培训材料，可以看做上方《详解 webpackBootstrap》的扩展阅读
+- [跳出工程化看工程化](./articles/跳出工程化看工程化.md) 对前端工程化及各个过程的一点总结
 
 ## Coding Practice
 
