@@ -26,3 +26,4 @@ Personal blog and coding practice. [See More](https://rainsho.cc/)
 - [happylife.js](./codes/solo/happylife.js) 一个比较综合的 RxJS 入门示例
 - [LRU.js](./codes/algorithm/LRU.js) LRU (Least Recently Used) 最近最少使用算法实现
 - [CircularQueue.js](./codes/algorithm/CircularQueue.js) 循环队列 Circular Queue 数据结构实现
+- [Heap.ts](./codes/algorithm/Heap.ts) 基于 TS 的堆结构实现
