@@ -57,21 +57,39 @@ ctx.decodeAudioData(buffer, decodeData => {
 
 如上图所示的一段声波，可以看到其在 0.01s 内振动了 2 次，因此频率是 200Hz；振幅是 1。 听起来便是这样一个效果：
 
+```html
 <audio controls>
-  <source src="https://raw.githubusercontent.com/Rainsho/blog/master/assets/200hz.wav" type="audio/wav">
+  <source
+    src="https://raw.githubusercontent.com/Rainsho/blog/master/assets/200hz.wav"
+    type="audio/wav"
+  />
+  https://raw.githubusercontent.com/Rainsho/blog/master/assets/200hz.wav
 </audio>
+```
 
 类似的，如果是一段 800Hz 的声音，听起来便是这样一个效果：
 
+```html
 <audio controls>
-  <source src="https://raw.githubusercontent.com/Rainsho/blog/master/assets/800hz.wav" type="audio/wav">
+  <source
+    src="https://raw.githubusercontent.com/Rainsho/blog/master/assets/800hz.wav"
+    type="audio/wav"
+  />
+  https://raw.githubusercontent.com/Rainsho/blog/master/assets/800hz.wav
 </audio>
+```
 
 以上两段声音都是 pure tone，而现实世界中我们听到的声音不会是 pure tone，而是各种 pure tone 叠加的结果。比如上面两段叠加后，便是这样一个效果。
 
+```html
 <audio controls>
-  <source src="https://raw.githubusercontent.com/Rainsho/blog/master/assets/mixed.wav" type="audio/wav">
+  <source
+    src="https://raw.githubusercontent.com/Rainsho/blog/master/assets/mixed.wav"
+    type="audio/wav"
+  />
+  https://raw.githubusercontent.com/Rainsho/blog/master/assets/mixed.wav
 </audio>
+```
 
 ```ts
 // 使用 AudioContext 进行 source 合并
@@ -118,22 +136,22 @@ source2.start(0);
 let ctx: AudioContext;
 
 function playTone(freq: number, dur: number = 0.25) {
-if (!ctx) ctx = new AudioContext();
+  if (!ctx) ctx = new AudioContext();
 
-const SAMPLE_RATE = ctx.sampleRate;
-const buffer = ctx.createBuffer(1, SAMPLE_RATE \* dur, SAMPLE_RATE);
-const ch = buffer.getChannelData(0);
-const len = SAMPLE_RATE / freq; // 一个周期的采样点数量
+  const SAMPLE_RATE = ctx.sampleRate;
+  const buffer = ctx.createBuffer(1, SAMPLE_RATE \* dur, SAMPLE_RATE);
+  const ch = buffer.getChannelData(0);
+  const len = SAMPLE_RATE / freq; // 一个周期的采样点数量
 
-for (let i = 0; i < buffer.length; i++) {
-const tone = Math.sin(((i % len) / len) _ (Math.PI _ 2));
-ch[i] = tone;
-}
+  for (let i = 0; i < buffer.length; i++) {
+    const tone = Math.sin(((i % len) / len) _ (Math.PI _ 2));
+    ch[i] = tone;
+  }
 
-const source = ctx.createBufferSource();
-source.buffer = buffer;
-source.connect(ctx.destination);
-source.start(0);
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(ctx.destination);
+  source.start(0);
 }
 ```
 
